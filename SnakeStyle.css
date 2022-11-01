@@ -1,0 +1,20 @@
+*{
+    margin: 0;
+}
+
+#UI{
+    display: flex;
+    justify-content: space-evenly;
+    
+}
+
+#scoreCard, #timeCard{
+    display: flex;
+}
+
+#gameBoard{
+    border: black solid 3px;
+    width: 500px;
+    height: 500px;
+    margin: auto;
+}
