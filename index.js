@@ -52,12 +52,21 @@ function headStart()
 function tick()
 {
     
-
+    //the first array will need to be affected by a loop
     //change the x
     snake.body[0][0]= snake.body[0][0]+ snake.nextDirection[0];
     
     //change the y
     snake.body[0][1] =snake.body[0][1] + snake.nextDirection[1];
+
+    //go and render the movement of the snake
+    render();
+}
+
+function render()
+{
+    head.getBoundingClientRect.x = snake.body[0][0];
+    head.getBoundingClientRect.y = snake.body[1][0];
 }
 
 //update the game every 30 frames
