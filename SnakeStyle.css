@@ -1,15 +1,26 @@
+/*set up base game*/
 *{
     margin: 0;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+#title{
+    text-align: center;
 }
 
 #UI{
     display: flex;
-    justify-content: space-evenly;
-    
+    justify-content: center;    
 }
 
 #scoreCard, #timeCard{
     display: flex;
+    align-items: center;
+    padding-right: 2rem;
+}
+
+#scoreCard > h2, #timeCard >h2{
+    padding-right: 1rem;
 }
 
 #gameBoard{
@@ -17,4 +28,27 @@
     width: 500px;
     height: 500px;
     margin: auto;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#start{
+    width: 100px;
+    height: 50px;
+    font-size:x-large;
+    font-weight: 300;
+    border-radius: 10%;
+}
+
+#highScore{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+#highScore > h2{
+    padding-right: 1rem;
 }
