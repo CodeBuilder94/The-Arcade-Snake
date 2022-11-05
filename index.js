@@ -3,7 +3,7 @@ let board = document.querySelector("#gameBoard");
 let head =null;
 
 let snake = {
-    body:[], //array of arrays
+    body:[[]], //array of arrays
     nextDirection:[1,0] //determins the direction of the snake (x,y)
 }
 
@@ -24,6 +24,9 @@ function startGame(ev)
     
     //add head location to snake obj
     headStart();
+
+    //update the game every 30 frames
+    setInterval(tick, 1000/30);
 }
 
 //create the snake
@@ -41,9 +44,10 @@ function headStart()
 {
     //get the location data of the head
     let headLocation =head.getBoundingClientRect();
-    snake.body.push([]);
-    snake.body[0].push(headLocation.x); //the x
-    snake.body[0].push(headLocation.y); //the y
+
+    let snakeBodyArr = snake.body;
+    snakeBodyArr[0].push(headLocation.x); //the x
+    snakeBodyArr[0].push(headLocation.y); //the y
     console.log(snake.body);
 
 }
@@ -54,23 +58,25 @@ function tick()
     
     //the first array will need to be affected by a loop
     //change the x
-    snake.body[0][0]= snake.body[0][0]+ snake.nextDirection[0];
+    //snake.body[0][0]= snake.body[0][0];
     
     //change the y
-    snake.body[0][1] =snake.body[0][1] + snake.nextDirection[1];
+    let snakeArr = snake.body[0];
+    snakeArr[1] =snakeArr[1] + 1
 
     //go and render the movement of the snake
-    render();
+    render(snakeArr);
 }
 
-function render()
+function render(snakeArr)
 {
-    head.getBoundingClientRect.x = snake.body[0][0];
-    head.getBoundingClientRect.y = snake.body[1][0];
+    let headLocation = head.getBoundingClientRect();
+    //headLocation.x 
+    headLocation.y += 1;
+    console.log(headLocation.y);
 }
 
-//update the game every 30 frames
-setInterval(tick, 1000/30)
+
 
 //start button pressed
 let startButton = document.querySelector("#start");
