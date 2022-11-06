@@ -62,18 +62,20 @@ function tick()
     
     //change the y
     let snakeArr = snake.body[0];
-    snakeArr[1] =snakeArr[1] + 1
+    snakeArr[1] =snakeArr[1] + 10
 
     //go and render the movement of the snake
     render(snakeArr);
 }
-
+    
 function render(snakeArr)
 {
     let headLocation = head.getBoundingClientRect();
     //headLocation.x 
-    headLocation.y += 1;
-    console.log(headLocation.y);
+    head.style.top = parseInt(head.style.top) + 50 + "px";
+    console.log(head.style.top);
+    //headLocation.y = snakeArr[1];
+    //console.log(headLocation.y);
 }
 
 
