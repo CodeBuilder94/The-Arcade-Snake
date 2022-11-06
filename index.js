@@ -36,6 +36,7 @@ function createSnake()
     head.style.height = "30px";
     head.style.width = "30px";
     head.style.backgroundColor ="green";
+    head.style.position ="absolute";
     board.appendChild(head); 
     return head;
 }
@@ -48,7 +49,8 @@ function headStart()
     let snakeBodyArr = snake.body;
     snakeBodyArr[0].push(headLocation.x); //the x
     snakeBodyArr[0].push(headLocation.y); //the y
-    console.log(snake.body);
+    
+    
 
 }
 
@@ -56,12 +58,13 @@ function headStart()
 function tick()
 {
     
-    //the first array will need to be affected by a loop
+    
+    let snakeArr = snake.body[0];
     //change the x
-    //snake.body[0][0]= snake.body[0][0];
+    //snakeArr[0]= snakeArr[0]+10;
     
     //change the y
-    let snakeArr = snake.body[0];
+    
     snakeArr[1] =snakeArr[1] + 10
 
     //go and render the movement of the snake
@@ -70,10 +73,14 @@ function tick()
     
 function render(snakeArr)
 {
-    let headLocation = head.getBoundingClientRect();
+    //let headLocation = head.getBoundingClientRect();
     //headLocation.x 
-    head.style.top = parseInt(head.style.top) + 50 + "px";
-    console.log(head.style.top);
+    
+    //move the head up
+    
+    head.style.transform = "translateY(- 10px)";
+    
+    
     //headLocation.y = snakeArr[1];
     //console.log(headLocation.y);
 }
