@@ -1,14 +1,15 @@
 //get game board
-let board = document.querySelector("#gameBoard");
-let head =null;
+let board = null;
+let row = null;
 
 let snake = {
-    body:[[]], //array of arrays
+    body:[], //array of arrays
     nextDirection:[0,-1] //determins the direction of the snake (x,y)
 }
 
 let gameState ={
     food:[],
+    foodPresent:false,
     snake: snake
 }
 //function for start of the page
@@ -19,90 +20,130 @@ function startGame(ev)
     //remove the button
     ev.target.remove();
 
-    //create the snake
-   let head = createSnake();
+    //make the board
+    makeBoard();
     
-    //add head location to snake obj
-    headStart();
+    //create the snake
+    createSnake();
+    
 
     //update the game every 30 frames
     setInterval(tick, 1000/30);
 }
 
+function makeBoard()
+{
+    board = document.createElement("table");
+    board.setAttribute("id","gameBoard");
+
+    let gamePlace = document.querySelector("#gamePlace");
+    gamePlace.appendChild(board);
+
+
+    let colorNum = 1;
+    
+    //add td and tr
+    for(let r =0;r<30;r++)
+    {
+        
+
+        let newRow = document.createElement("tr");
+        newRow.style.height ="4px";
+        board.appendChild(newRow);
+        
+
+        for(let c =0; c<30; c++)
+        {
+            let newCol = document.createElement("td");
+            newCol.style.width ="4px";
+            
+
+            //alternate colors for background
+            if(colorNum %2 ===1)
+            {
+                newCol.style.backgroundColor = "darkgray";
+            }
+            else{
+                newRow.style.backgroundColor = "lightgray";
+            }
+             
+            colorNum++;
+            
+            newRow.appendChild(newCol);
+        }
+
+            colorNum ++;
+    }
+
+    row = document.getElementsByTagName("tr");
+}
+
 //create the snake
 function createSnake()
 {
-    head = document.createElement("div");
-    head.style.height = "30px";
-    head.style.width = "30px";
-    head.style.backgroundColor ="green";
-    head.style.position ="absolute";
-    head.style.top ="300px";
-    head.style.left ="300px";
-    head.style.right = "300px";
-    head.style.bottom = "300px";
-   
-    board.appendChild(head); 
-    return head;
+    //change the color of the 14 col and 14 row item
+    
+    let headRow = row[14];
+       
+    let col = headRow.cells[14];
+        
+    col.style.backgroundColor ="green";
+
+    //add head location to body array
+    snake.body.push([headRow,col]);
+
 }
 
-function headStart()
-{
-    //get the location data of the head
-    let headLocation =head.getBoundingClientRect();
 
-    let snakeBodyArr = snake.body;
-    snakeBodyArr[0].push(headLocation.x); //the x
-    snakeBodyArr[0].push(headLocation.y); //the y
-}
 
 //have the game update
 function tick()
 {
     
-    
-    let snakeArr = snake.body[0];
-    //change the x
-    //snakeArr[0]= snakeArr[0]+10;
-    
-    //change the y
-    
-    snakeArr[1] =snakeArr[1] + 10
 
     //go and render the movement of the snake
     moveHead();
     //render(snakeArr);
 
-
+    //create the apple
+    spawnApple();
 }
 
 function moveHead()
 {
+    let head =row;
+    console.log(head);
+
     if(snake.nextDirection[1]===-1)
     {
         //move up
-        head.style.transition = "top 10s linear";
-        head.style.top = "-10px";
+        //let col = row.cells[head[0]];
+        let headRow = row[head[1]];
+
+        
+
+
+
+        
+
+        
         
         
     }
     else if(snake.nextDirection[1] === 1)
     {
         //move down
-        head.style.transition = "bottom 10s linear";
-        head.style.bottom = "10px";
+        
         
     }
     else if(snake.nextDirection[0]===1)
     {
         //move left
-        head.style.transition = "left 10s linear";
-        head.style.left = "10px";
+        
     }
-    else
+    else 
     {
-        head.style.transition = "right 10s linear";
-        head.style.right = "10px";
+        //move right
     }
 }
     
@@ -119,7 +160,9 @@ function moveHead()
     //console.log(headLocation.y);
 //}
 
+function spawnApple(){
 
+}
 
 //start button pressed
 let startButton = document.querySelector("#start");
