@@ -4,13 +4,15 @@ let row = null;
 
 let snake = {
     body:[], //array of arrays
-    nextDirection:[0,-1] //determins the direction of the snake (x,y)
+    nextDirection:[0,-1], //determins the direction of the snake (x,y)
+    speed: 1
 }
 
 let gameState ={
     food:[],
     foodPresent:false,
     snake: snake
+    
 }
 //function for start of the page
 
@@ -62,9 +64,11 @@ function makeBoard()
             if(colorNum %2 ===1)
             {
                 newCol.style.backgroundColor = "darkgray";
+                newCol.setAttribute("class","dg");
             }
             else{
-                newRow.style.backgroundColor = "lightgray";
+                newCol.style.backgroundColor = "lightgray";
+                newCol.setAttribute("class","lg");
             }
              
             colorNum++;
@@ -90,7 +94,7 @@ function createSnake()
     col.style.backgroundColor ="green";
 
     //add head location to body array
-    snake.body.push([headRow,col]);
+    snake.body.push([14,14]);
 
 }
 
@@ -103,47 +107,73 @@ function tick()
 
     //go and render the movement of the snake
     moveHead();
+    
+    //move body
     //render(snakeArr);
 
     //create the apple
-    spawnApple();
+    if(gameState.foodPresent ===false)
+    {
+        spawnApple();
+    }
+    
 }
 
 function moveHead()
 {
-    let head =row;
-    console.log(head);
+    let head = snake.body[0];
+    let headX =head[0];
+    let headY = head[1];
+
+    let headR = board.children;
+    let headC = headR[head[0]].children[head[1]];
+    
 
     if(snake.nextDirection[1]===-1)
     {
         //move up
-        //let col = row.cells[head[0]];
-        let headRow = row[head[1]];
+        colorDefault(headC);
 
-        
+        head[0] -=snake.speed;
+
+        headC = headR[head[0]].children[head[1]];
+        headC.style.backgroundColor = "green";
 
 
-
-        
-
-        
-        
         
     }
     else if(snake.nextDirection[1] === 1)
     {
         //move down
-        
+        colorDefault(headC);
+
+        head[0] +=snake.speed;
+
+        headC = headR[head[0]].children[head[1]];
+        headC.style.backgroundColor = "green";
+
+
         
     }
     else if(snake.nextDirection[0]===1)
     {
         //move left
-        
+        colorDefault(headC);
+
+        head[1]-=snake.speed;
+
+        headC = headR[head[0]].children[head[1]];
+        headC.style.backgroundColor = "green";
     }
     else 
     {
         //move right
+        colorDefault(headC);
+
+        head[1] +=snake.speed;
+
+        headC = headR[head[0]].children[head[1]];
+        headC.style.backgroundColor = "green";
     }
 }
     
@@ -160,7 +190,22 @@ function moveHead()
     //console.log(headLocation.y);
 //}
 
-function spawnApple(){
+function spawnApple()
+{
+    gameState.foodPresent =true;
+
+    //select a random cell to put the apple in
+    let appleR =Math.floor(Math.random()*30);
+
+    gameState.food[0] = appleR;
+
+    let appleC = Math.floor(Math.floor(Math.random()*30))
+
+    gameState.food[1] =appleC;
+
+    //check to see if the snake is alredy there
+    
+
 
 }
 
@@ -177,24 +222,33 @@ document.onkeyup = function(ev)
             //left arrow
             snake.nextDirection[0]=1;
             snake.nextDirection[1]=0;
-            head.style.transition ="notransition";
             break;
         case 38:
             //up arrow
             snake.nextDirection[0]=0;
             snake.nextDirection[1]=-1;
-            head.style.transition ="notransition";
             break;
         case 39:
             //right arrow
             snake.nextDirection[0]=-1;
             snake.nextDirection[1]=0;
-            head.style.transition ="notransition";
             break;
         case 40:
             //down arrow
             snake.nextDirection[0]=0;
             snake.nextDirection[1]=1;
-            head.style.transition ="notransition";
+            break;
     }
+}
+
+function colorDefault(square)
+{
+    if(square.classList.contains("lg"))
+        {
+            square.style.backgroundColor = "lightgray";
+        }
+        else
+        {
+            square.style.backgroundColor = "darkgray";
+        }
 }
