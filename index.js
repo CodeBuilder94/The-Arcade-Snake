@@ -49,7 +49,6 @@ function makeBoard()
     for(let r =0;r<30;r++)
     {
         
-
         let newRow = document.createElement("tr");
         newRow.style.height ="4px";
         board.appendChild(newRow);
@@ -110,7 +109,7 @@ function tick()
     moveHead();
     
     //move body
-    //render();
+    render();
 
     //create the apple
     if(gameState.foodPresent ===false)
@@ -136,32 +135,29 @@ function moveHead()
     if(snake.nextDirection[1]===-1)
     {
         //move up
-        colorDefault(headC);
-
         head[0] -=snake.speed;
         
     }
     else if(snake.nextDirection[1] === 1)
     {
         //move down
-        colorDefault(headC);
-
         head[0] +=snake.speed;
        
     }
     else if(snake.nextDirection[0]===1)
     {
         //move left
-        colorDefault(headC);
-
         head[1]-=snake.speed;
     }
     else 
     {
         //move right
-        colorDefault(headC);
-
         head[1] +=snake.speed;
+    }
+
+    if(snake.body.length===1)
+    {
+        colorDefault(headC);
     }
 
     snakeWarp(head);
@@ -171,39 +167,49 @@ function moveHead()
 }
  
 
-function snakeWarp(head)
+function render()
 {
-    if(head[1]===30)
+    if(snake.body.length >1)
     {
-        head[1]=0;
-    }
-    else if(head[1]===-1)
-    {
-        head[1]=29;
-    }
+        let lastPart = snake.body[snake.body.length-1];
+        
+        //move down the array to move the snake
+        for(let i =snake.body.length; i>0 ; i--)
+        {
+            
+            snake.body[i] = snake.body[i-1];
+            
+        }
 
-    if(head[0]===30)
-    {
-        head[0]=0;
+        //console.log(snake.body[snake.body.length-1]);
+        let resetRow = board.children;
+        let resetCol = resetRow[lastPart[0]].children[lastPart[1]];
+        
+        colorDefault(resetCol);
     }
-    else if(head[0]===-1)
-    {
-        head[0]=29;
-    }
+    
 }
 
-//function render(snakeArr)
-//{
-    //let headLocation = head.getBoundingClientRect();
-    //headLocation.x 
-    
-    //move the head up
-    //head.style.transform = "translateY(-10px)";
-    
-    
-    //headLocation.y = snakeArr[1];
-    //console.log(headLocation.y);
-//}
+function snakeWarp(part)
+{
+    if(part[1]===30)
+    {
+        part[1]=0;
+    }
+    else if(part[1]===-1)
+    {
+        part[1]=29;
+    }
+
+    if(part[0]===30)
+    {
+        part[0]=0;
+    }
+    else if(part[0]===-1)
+    {
+        part[0]=29;
+    }
+}
 
 function spawnApple()
 {
@@ -255,7 +261,75 @@ function eatApple()
         gameState.score +=1;
         scoreLabel.innerText = gameState.score;
         spawnApple();
+        addBody();
     }
+}
+
+function addBody()
+{
+    //add body to the snake
+    let sBody = snake.body[snake.body.length-1];
+    
+    let newPartC =null;
+    let newPartR =null;
+
+    if(snake.nextDirection[0]===-1)
+    {
+        //place below
+
+        newPartR = sBody[0]+1;
+        
+        snake.body.push([newPartR,sBody[1]]);
+
+        if(snake.body[snake.body.length-1[0]]===30 ||snake.body[snake.body.length-1[0]]===-1)
+        {
+            snakeWarp(snake.body[snake.body.length-1])
+        }
+        
+    }
+    else if(snake.nextDirection[0]===1)
+    {
+        //place above
+        newPartR = sBody[0]-1;
+
+        snake.body.push([newPartR,sBody[1]]);
+
+        if(snake.body[snake.body.length-1[0]]===30 ||snake.body[snake.body.length-1[0]]===-1)
+        {
+            snakeWarp(snake.body[snake.body.length-1])
+        }
+
+    }
+    else if(snake.nextDirection[1]===-1)
+    {
+        //place left
+        newPartC = sBody[1]+1;
+
+        snake.body.push([sBody[0],newPartC]);
+
+        if(snake.body[snake.body.length-1[1]]===30 ||snake.body[snake.body.length-1[1]]===-1)
+        {
+            snakeWarp(snake.body[snake.body.length-1])
+        }
+
+    }
+    else if(snake.nextDirection=sBody[1]===1)
+    {
+        //place right
+        newPartC =sBody[1]-1;
+
+        snake.body.push([sBody[0],newPartC]);
+
+        if(snake.body[snake.body.length-1[1]]===30 ||snake.body[snake.body.length-1[1]]===-1)
+        {
+            snakeWarp(snake.body[snake.body.length-1])
+        }
+    }
+
+    let bodyR = board.children;
+    let bodyC = bodyR[sBody[0]].children[sBody[1]];
+
+    bodyC.style.backgroundColor ="green";
 }
 
 function colorDefault(square)
