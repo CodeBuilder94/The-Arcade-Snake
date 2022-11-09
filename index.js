@@ -110,13 +110,16 @@ function tick()
     moveHead();
     
     //move body
-    //render(snakeArr);
+    //render();
 
     //create the apple
     if(gameState.foodPresent ===false)
     {
         spawnApple();
     }
+
+    //check to see if the apple was eaten
+    eatApple();
     
 }
 
@@ -232,8 +235,28 @@ function spawnApple()
     let aCol = aRow[appleR].children[appleC];
     aCol.style.backgroundColor ="#D80C0C";
 
+    //add food location
+    gameState.food[0]= appleR;
+    gameState.food[1]= appleC;
+
 }
 
+function eatApple()
+{
+    //get score element
+    let scoreLabel = document.querySelector("#score");
+
+    //check to see if the head and the apple overlap;
+    let head = snake.body[0];
+    let appleL = gameState.food;
+
+    if(head[0]===appleL[0] && head[1]===appleL[1])
+    {
+        gameState.score +=1;
+        scoreLabel.innerText = gameState.score;
+        spawnApple();
+    }
+}
 
 function colorDefault(square)
 {
@@ -252,7 +275,7 @@ let startButton = document.querySelector("#start");
 startButton.addEventListener("click",startGame);
 
 //arrow keys
-document.onkeyup = function(ev)
+document.onkeydown = function(ev)
 {
     switch (ev.keyCode)
     {
