@@ -274,7 +274,7 @@ function addBody()
 {
     //add body to the snake
     let sBody = snake.body[snake.body.length-1];
-    
+    console.log(sBody);
     let newPartC =0;
     let newPartR =0;
 
@@ -284,6 +284,8 @@ function addBody()
 
         newPartR = sBody[0]+1;
         
+        
+
         snake.body.push([newPartR,sBody[1]]);
 
         if(snake.body[snake.body.length-1[0]]===30 ||snake.body[snake.body.length-1[0]]===-1)
