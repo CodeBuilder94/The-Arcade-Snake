@@ -11,8 +11,9 @@ let snake = {
 let gameState ={
     food:[],
     foodPresent:false,
-    snake: snake
-    
+    snake: snake,
+    score:0,
+    highScore:0
 }
 //function for start of the page
 
@@ -135,11 +136,6 @@ function moveHead()
         colorDefault(headC);
 
         head[0] -=snake.speed;
-
-        headC = headR[head[0]].children[head[1]];
-        headC.style.backgroundColor = "green";
-
-
         
     }
     else if(snake.nextDirection[1] === 1)
@@ -148,12 +144,7 @@ function moveHead()
         colorDefault(headC);
 
         head[0] +=snake.speed;
-
-        headC = headR[head[0]].children[head[1]];
-        headC.style.backgroundColor = "green";
-
-
-        
+       
     }
     else if(snake.nextDirection[0]===1)
     {
@@ -161,9 +152,6 @@ function moveHead()
         colorDefault(headC);
 
         head[1]-=snake.speed;
-
-        headC = headR[head[0]].children[head[1]];
-        headC.style.backgroundColor = "green";
     }
     else 
     {
@@ -171,12 +159,36 @@ function moveHead()
         colorDefault(headC);
 
         head[1] +=snake.speed;
+    }
 
-        headC = headR[head[0]].children[head[1]];
-        headC.style.backgroundColor = "green";
+    snakeWarp(head);
+
+    headC = headR[head[0]].children[head[1]];
+    headC.style.backgroundColor = "green";
+}
+ 
+
+function snakeWarp(head)
+{
+    if(head[1]===30)
+    {
+        head[1]=0;
+    }
+    else if(head[1]===-1)
+    {
+        head[1]=29;
+    }
+
+    if(head[0]===30)
+    {
+        head[0]=0;
+    }
+    else if(head[0]===-1)
+    {
+        head[0]=29;
     }
 }
-    
+
 //function render(snakeArr)
 //{
     //let headLocation = head.getBoundingClientRect();
@@ -204,9 +216,35 @@ function spawnApple()
     gameState.food[1] =appleC;
 
     //check to see if the snake is alredy there
-    
+    for(let i=0; i<snake.body.length;i++)
+    {
+        let head = snake.body[i];
+        
+
+       if(head[0]===appleR && head[1]===appleC)
+        {
+            spawnApple();
+        }
+
+    }
+
+    let aRow = board.children;
+    let aCol = aRow[appleR].children[appleC];
+    aCol.style.backgroundColor ="#D80C0C";
+
+}
 
 
+function colorDefault(square)
+{
+    if(square.classList.contains("lg"))
+        {
+            square.style.backgroundColor = "lightgray";
+        }
+        else
+        {
+            square.style.backgroundColor = "darkgray";
+        }
 }
 
 //start button pressed
@@ -239,16 +277,4 @@ document.onkeyup = function(ev)
             snake.nextDirection[1]=1;
             break;
     }
-}
-
-function colorDefault(square)
-{
-    if(square.classList.contains("lg"))
-        {
-            square.style.backgroundColor = "lightgray";
-        }
-        else
-        {
-            square.style.backgroundColor = "darkgray";
-        }
 }
