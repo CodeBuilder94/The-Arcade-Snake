@@ -13,7 +13,8 @@ let gameState ={
     foodPresent:false,
     snake: snake,
     score:0,
-    highScore:0
+    highScore:0,
+    start:false
 }
 //function for start of the page
 
@@ -29,9 +30,10 @@ function startGame(ev)
     //create the snake
     createSnake();
     
+    gameState.start=true;
 
     //update the game every 30 frames
-    setInterval(tick, 1000/30);
+    setInterval(tick, 500); //1000/30
 }
 
 function makeBoard()
@@ -103,22 +105,23 @@ function createSnake()
 //have the game update
 function tick()
 {
-    
-
-    //go and render the movement of the snake
-    moveHead();
-    
-    //move body
-    render();
-
-    //create the apple
-    if(gameState.foodPresent ===false)
+    if(gameState.start===true)
     {
-        spawnApple();
-    }
+        //go and render the movement of the snake
+        moveHead();
+        
+        //move body
+        render();
 
-    //check to see if the apple was eaten
-    eatApple();
+        //create the apple
+        if(gameState.foodPresent ===false)
+        {
+            spawnApple();
+        }
+
+        //check to see if the apple was eaten
+        eatApple();
+    }
     
 }
 
@@ -169,25 +172,26 @@ function moveHead()
 
 function render()
 {
-    if(snake.body.length >1)
+    /*if(snake.body.length >1)
     {
         let lastPart = snake.body[snake.body.length-1];
         
         //move down the array to move the snake
-        for(let i =snake.body.length; i>0 ; i--)
+        for(let i =snake.body.length-1; i>0 ; i--)
         {
             
-            snake.body[i[0]]= snake.body[i[0]-1];
-            snake.body[i[1]]= snake.background[i[1]-1];
+            snake.body[i[0]] = snake.body[i[0]-1];
+            snake.body[i[1]] = snake.body[i[1]-1];
             
         }
 
         //console.log(snake.body[snake.body.length-1]);
+
         let resetRow = board.children;
         let resetCol = resetRow[lastPart[0]].children[lastPart[1]];
         
         colorDefault(resetCol);
-    }
+    }*/
     
 }
 
@@ -271,8 +275,8 @@ function addBody()
     //add body to the snake
     let sBody = snake.body[snake.body.length-1];
     
-    let newPartC =null;
-    let newPartR =null;
+    let newPartC =0;
+    let newPartR =0;
 
     if(snake.nextDirection[0]===-1)
     {
@@ -327,10 +331,14 @@ function addBody()
         }
     }
 
+    console.log(newPartR +" "+newPartC);
+
     let bodyR = board.children;
     let bodyC = bodyR[sBody[0]].children[sBody[1]];
-
+    
     bodyC.style.backgroundColor ="green";
+    console.log(bodyC);
+    gameState.start=false;
 }
 
 function colorDefault(square)
