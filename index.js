@@ -177,7 +177,8 @@ function render()
         for(let i =snake.body.length; i>0 ; i--)
         {
             
-            snake.body[i] = snake.body[i-1];
+            snake.body[i[0]]= snake.body[i[0]-1];
+            snake.body[i[1]]= snake.background[i[1]-1];
             
         }
 
