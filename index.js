@@ -65,11 +65,10 @@ function makeBoard()
             //alternate colors for background
             if(colorNum %2 ===1)
             {
-                //newCol.style.backgroundColor = "darkgray";
                 newCol.classList.add("dg");
             }
-            else{
-                //newCol.style.backgroundColor = "lightgray";
+            else
+            {
                 newCol.classList.add("lg");
             }
              
@@ -94,8 +93,9 @@ function createSnake()
     let col = headRow.cells[14];
 
     col.classList.add("snake");
+    col.setAttribute("id","head");
         
-    console.log(col.classList);
+    console.log(col);
 
 
     //add head location to body array
@@ -178,14 +178,10 @@ function tick()
 function render()
 {
 
-    //moveSnake();
+    moveSnake();
 
-    //drawSnake();
-
+    drawSnake();
     //removeSnake();
-
-    
-
 
     /*if(snake.body.length >1)
     {
@@ -233,14 +229,21 @@ function moveSnake()
     let moveByC =snake.nextDirection[1];
     let head = snake.body[snake.body.length-1]
 
-    //check to see if the snake needs to warp
+    
     
     let nextHead =[head[0]+ moveByR, head[1]+moveByC];
 
+    //check to see if the snake needs to warp
     snakeWarp(nextHead);
 
     snake.body.push(nextHead);
     snake.body.shift(snake[0]);
+}
+
+
+function drawSnake()
+{
+
 }
 
 
@@ -389,7 +392,7 @@ function addBody()
     let bodyC = bodyR[newSBody[0]].children[newSBody[1]];
     
     //chage new body to green
-    bodyC.style.backgroundColor ="green";
+    bodyC.classList.add("snake");
 
 }
 
