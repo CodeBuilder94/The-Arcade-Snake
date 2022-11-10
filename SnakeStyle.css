@@ -4,6 +4,8 @@
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
+
+
 body{
     display: flex;
     flex-direction: column;
@@ -38,6 +40,14 @@ body{
     border-collapse: collapse;
 }
 
+.dg{
+    background-color: darkgray;
+}
+
+.lg{
+    background-color: lightgray;
+}
+
 #start{
     width: 100px;
     height: 50px;
@@ -56,4 +66,10 @@ body{
 
 #highScore > h2{
     padding-right: 1rem;
+}
+
+
+/*snake class*/
+.snake{
+    background-color: green;
 }

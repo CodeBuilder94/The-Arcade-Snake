@@ -65,12 +65,12 @@ function makeBoard()
             //alternate colors for background
             if(colorNum %2 ===1)
             {
-                newCol.style.backgroundColor = "darkgray";
-                newCol.setAttribute("class","dg");
+                //newCol.style.backgroundColor = "darkgray";
+                newCol.classList.add("dg");
             }
             else{
-                newCol.style.backgroundColor = "lightgray";
-                newCol.setAttribute("class","lg");
+                //newCol.style.backgroundColor = "lightgray";
+                newCol.classList.add("lg");
             }
              
             colorNum++;
@@ -92,8 +92,11 @@ function createSnake()
     let headRow = row[14];
        
     let col = headRow.cells[14];
+
+    col.classList.add("snake");
         
-    col.style.backgroundColor ="green";
+    console.log(col.classList);
+
 
     //add head location to body array
     snake.body.push([14,14]);
@@ -108,7 +111,8 @@ function tick()
     if(gameState.start===true)
     {
         //go and render the movement of the snake
-        moveHead();
+        //moveHead();
+                       
         
         //move body
         render();
@@ -125,9 +129,10 @@ function tick()
     
 }
 
-function moveHead()
+/*function moveHead()
 {
     let head = snake.body[0];
+    snake.oldHead = head;
     let headX =head[0];
     let headY = head[1];
 
@@ -167,33 +172,77 @@ function moveHead()
 
     headC = headR[head[0]].children[head[1]];
     headC.style.backgroundColor = "green";
-}
+}*/
  
 
 function render()
 {
+
+    //moveSnake();
+
+    //drawSnake();
+
+    //removeSnake();
+
+    
+
+
     /*if(snake.body.length >1)
     {
+        console.log("before move body"+ snake.oldHead);
         let lastPart = snake.body[snake.body.length-1];
-        
+                
+        let sBody =snake.body;
         //move down the array to move the snake
-        for(let i =snake.body.length-1; i>0 ; i--)
+        for(let o =1; o< snake.body.length; o++)
         {
-            
-            snake.body[i[0]] = snake.body[i[0]-1];
-            snake.body[i[1]] = snake.body[i[1]-1];
+            let sPart =sBody[o];
+
+            for(let i=0; i <2;i++)
+            {
+                //to move to where the head's pervious position
+                if(o ===1)
+                {
+                    sPart[i] = snake.oldHead[i];
+                    continue;
+                }
+
+                let beforePart = sBody[o-1];
+                sPart[i] = beforePart[i];
+            }
             
         }
 
-        //console.log(snake.body[snake.body.length-1]);
+        console.log("after moving" + snake.body[1]);
 
         let resetRow = board.children;
         let resetCol = resetRow[lastPart[0]].children[lastPart[1]];
-        
+
+                
         colorDefault(resetCol);
+
+        //gameState.start =false;
     }*/
     
 }
+
+
+function moveSnake()
+{
+    let moveByR = snake.nextDirection[0];
+    let moveByC =snake.nextDirection[1];
+    let head = snake.body[snake.body.length-1]
+
+    //check to see if the snake needs to warp
+    
+    let nextHead =[head[0]+ moveByR, head[1]+moveByC];
+
+    snakeWarp(nextHead);
+
+    snake.body.push(nextHead);
+    snake.body.shift(snake[0]);
+}
+
 
 function snakeWarp(part)
 {
@@ -274,17 +323,17 @@ function addBody()
 {
     //add body to the snake
     let sBody = snake.body[snake.body.length-1];
-    console.log(sBody);
+    
     let newPartC =0;
     let newPartR =0;
+    let oldPartR = sBody[0];
+    let oldPartC = sBody[1];
 
-    if(snake.nextDirection[0]===-1)
+
+    if(snake.nextDirection[1]===-1)
     {
         //place below
-
-        newPartR = sBody[0]+1;
-        
-        
+        newPartR = oldPartR+1;
 
         snake.body.push([newPartR,sBody[1]]);
 
@@ -294,10 +343,10 @@ function addBody()
         }
         
     }
-    else if(snake.nextDirection[0]===1)
+    else if(snake.nextDirection[1]===1)
     {
         //place above
-        newPartR = sBody[0]-1;
+        newPartR = oldPartR-1;
 
         snake.body.push([newPartR,sBody[1]]);
 
@@ -307,10 +356,10 @@ function addBody()
         }
 
     }
-    else if(snake.nextDirection[1]===-1)
+    else if(snake.nextDirection[0]===-1)
     {
         //place left
-        newPartC = sBody[1]+1;
+        newPartC = oldPartC+1;
 
         snake.body.push([sBody[0],newPartC]);
 
@@ -320,10 +369,10 @@ function addBody()
         }
 
     }
-    else if(snake.nextDirection=sBody[1]===1)
+    else if(snake.nextDirection=sBody[0]===1)
     {
         //place right
-        newPartC =sBody[1]-1;
+        newPartC =oldPartC-1;
 
         snake.body.push([sBody[0],newPartC]);
 
@@ -333,14 +382,15 @@ function addBody()
         }
     }
 
-    console.log(newPartR +" "+newPartC);
-
-    let bodyR = board.children;
-    let bodyC = bodyR[sBody[0]].children[sBody[1]];
     
+
+    let newSBody = snake.body[snake.body.length-1];
+    let bodyR = board.children;
+    let bodyC = bodyR[newSBody[0]].children[newSBody[1]];
+    
+    //chage new body to green
     bodyC.style.backgroundColor ="green";
-    console.log(bodyC);
-    gameState.start=false;
+
 }
 
 function colorDefault(square)
