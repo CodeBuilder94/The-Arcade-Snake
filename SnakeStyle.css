@@ -73,3 +73,8 @@ body{
 .snake{
     background-color: green;
 }
+
+/*food class*/
+.food{
+    background-color: #D80C0C;
+}

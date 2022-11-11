@@ -4,7 +4,7 @@ let row = null;
 
 let snake = {
     body:[], //array of arrays
-    nextDirection:[0,-1], //determins the direction of the snake (x,y)
+    nextDirection:[-1,0],
     speed: 1
 }
 
@@ -93,11 +93,7 @@ function createSnake()
     let col = headRow.cells[14];
 
     col.classList.add("snake");
-    col.setAttribute("id","head");
-        
-    console.log(col);
-
-
+            
     //add head location to body array
     snake.body.push([14,14]);
 
@@ -110,10 +106,7 @@ function tick()
 {
     if(gameState.start===true)
     {
-        //go and render the movement of the snake
-        //moveHead();
-                       
-        
+                         
         //move body
         render();
 
@@ -128,98 +121,13 @@ function tick()
     }
     
 }
-
-/*function moveHead()
-{
-    let head = snake.body[0];
-    snake.oldHead = head;
-    let headX =head[0];
-    let headY = head[1];
-
-    let headR = board.children;
-    let headC = headR[head[0]].children[head[1]];
-    
-
-    if(snake.nextDirection[1]===-1)
-    {
-        //move up
-        head[0] -=snake.speed;
-        
-    }
-    else if(snake.nextDirection[1] === 1)
-    {
-        //move down
-        head[0] +=snake.speed;
-       
-    }
-    else if(snake.nextDirection[0]===1)
-    {
-        //move left
-        head[1]-=snake.speed;
-    }
-    else 
-    {
-        //move right
-        head[1] +=snake.speed;
-    }
-
-    if(snake.body.length===1)
-    {
-        colorDefault(headC);
-    }
-
-    snakeWarp(head);
-
-    headC = headR[head[0]].children[head[1]];
-    headC.style.backgroundColor = "green";
-}*/
  
 
 function render()
 {
-
+    removeSnake();
     moveSnake();
-
     drawSnake();
-    //removeSnake();
-
-    /*if(snake.body.length >1)
-    {
-        console.log("before move body"+ snake.oldHead);
-        let lastPart = snake.body[snake.body.length-1];
-                
-        let sBody =snake.body;
-        //move down the array to move the snake
-        for(let o =1; o< snake.body.length; o++)
-        {
-            let sPart =sBody[o];
-
-            for(let i=0; i <2;i++)
-            {
-                //to move to where the head's pervious position
-                if(o ===1)
-                {
-                    sPart[i] = snake.oldHead[i];
-                    continue;
-                }
-
-                let beforePart = sBody[o-1];
-                sPart[i] = beforePart[i];
-            }
-            
-        }
-
-        console.log("after moving" + snake.body[1]);
-
-        let resetRow = board.children;
-        let resetCol = resetRow[lastPart[0]].children[lastPart[1]];
-
-                
-        colorDefault(resetCol);
-
-        //gameState.start =false;
-    }*/
-    
 }
 
 
@@ -227,22 +135,42 @@ function moveSnake()
 {
     let moveByR = snake.nextDirection[0];
     let moveByC =snake.nextDirection[1];
-    let head = snake.body[snake.body.length-1]
+    let head = snake.body[0]
 
-    
-    
     let nextHead =[head[0]+ moveByR, head[1]+moveByC];
 
     //check to see if the snake needs to warp
     snakeWarp(nextHead);
-
-    snake.body.push(nextHead);
-    snake.body.shift(snake[0]);
+    //console.log(snake.body);
+    snake.body.unshift(nextHead);
+    snake.body.pop(snake.body[snake.length-1]);
 }
 
 
 function drawSnake()
 {
+    let sBody = snake.body;
+
+    let table = board.children
+
+    for(let o =0;o< sBody.length;o++)
+    {
+        let bodyPart = sBody[o];
+        let snakeCell = table[bodyPart[0]].children[bodyPart[1]];
+        snakeCell.classList.add("snake");
+    }
+    
+}
+
+function removeSnake()
+{
+    let snakeBody = document.getElementsByClassName("snake");
+    
+    for(let i=0; i< snakeBody.length;i++)
+    {
+        let snakePart = snakeBody[i];
+        snakePart.classList.remove("snake");
+    }
 
 }
 
@@ -296,7 +224,7 @@ function spawnApple()
 
     let aRow = board.children;
     let aCol = aRow[appleR].children[appleC];
-    aCol.style.backgroundColor ="#D80C0C";
+    aCol.classList.add= "food";
 
     //add food location
     gameState.food[0]= appleR;
@@ -317,6 +245,11 @@ function eatApple()
     {
         gameState.score +=1;
         scoreLabel.innerText = gameState.score;
+
+        let aRow = board.children;
+        let aCol = aRow[appleR].children[appleC];
+        aCol.classList.remove("food");
+
         spawnApple();
         addBody();
     }
@@ -396,17 +329,6 @@ function addBody()
 
 }
 
-function colorDefault(square)
-{
-    if(square.classList.contains("lg"))
-        {
-            square.style.backgroundColor = "lightgray";
-        }
-        else
-        {
-            square.style.backgroundColor = "darkgray";
-        }
-}
 
 //start button pressed
 let startButton = document.querySelector("#start");
@@ -419,23 +341,23 @@ document.onkeydown = function(ev)
     {
         case 37:
             //left arrow
-            snake.nextDirection[0]=1;
-            snake.nextDirection[1]=0;
-            break;
-        case 38:
-            //up arrow
             snake.nextDirection[0]=0;
             snake.nextDirection[1]=-1;
             break;
-        case 39:
-            //right arrow
+        case 38:
+            //up arrow
             snake.nextDirection[0]=-1;
             snake.nextDirection[1]=0;
             break;
-        case 40:
-            //down arrow
+        case 39:
+            //right arrow
             snake.nextDirection[0]=0;
             snake.nextDirection[1]=1;
+            break;
+        case 40:
+            //down arrow
+            snake.nextDirection[0]=1;
+            snake.nextDirection[1]=0;
             break;
     }
 }
