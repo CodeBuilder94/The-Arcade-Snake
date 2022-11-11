@@ -160,7 +160,7 @@ function drawSnake()
     for(let o =0;o< sBody.length;o++)
     {
         let bodyPart = sBody[o];
-        let snakeCell = table[bodyPart[0]].children[bodyPart[1]];
+        let snakeCell = table[bodyPart[0]].children[bodyPart[1]]; //sometimes gives an error
         snakeCell.classList.add("snake");
     }
     
@@ -178,7 +178,7 @@ function removeSnake()
 
 }
 
-snakeCollision()
+function snakeCollision()
 {
     let snakeHead = snake.body[0];
     for(let o =1; o<snake.body.length;o++)
@@ -283,7 +283,7 @@ function addBody()
     let oldPartC = sBody[1];
 
 
-    if(snake.nextDirection[1]===-1)
+    if(snake.nextDirection[0]===-1)
     {
         //place below
         newPartR = oldPartR+1;
@@ -296,7 +296,7 @@ function addBody()
         }
         
     }
-    else if(snake.nextDirection[1]===1)
+    else if(snake.nextDirection[0]===1)
     {
         //place above
         newPartR = oldPartR-1;
@@ -309,7 +309,7 @@ function addBody()
         }
 
     }
-    else if(snake.nextDirection[0]===-1)
+    else if(snake.nextDirection[1]===1)
     {
         //place left
         newPartC = oldPartC+1;
@@ -322,7 +322,7 @@ function addBody()
         }
 
     }
-    else if(snake.nextDirection=sBody[0]===1)
+    else if(snake.nextDirection=sBody[1]===-1)
     {
         //place right
         newPartC =oldPartC-1;
