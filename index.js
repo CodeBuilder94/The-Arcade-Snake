@@ -33,7 +33,7 @@ function startGame(ev)
     gameState.start=true;
 
     //update the game every 30 frames
-    setInterval(tick, 500); //1000/30
+    setInterval(tick, 250); //1000/30
 }
 
 function makeBoard()
@@ -125,9 +125,13 @@ function tick()
 
 function render()
 {
+    console.log(document.getElementsByClassName("snake"));
     removeSnake();
     moveSnake();
     drawSnake();
+
+    //check to see if the game ends
+    snakeCollision();
 }
 
 
@@ -174,6 +178,20 @@ function removeSnake()
 
 }
 
+snakeCollision()
+{
+    let snakeHead = snake.body[0];
+    for(let o =1; o<snake.body.length;o++)
+    {   
+        let snakePart = snake.body[o];
+
+        if(snakeHead[0]=== snakePart[0] && snakeHead[1] === snakePart[1])
+        {
+            //game over
+        }
+    }
+}
+
 
 function snakeWarp(part)
 {
@@ -214,7 +232,6 @@ function spawnApple()
     {
         let head = snake.body[i];
         
-
        if(head[0]===appleR && head[1]===appleC)
         {
             spawnApple();
@@ -224,7 +241,7 @@ function spawnApple()
 
     let aRow = board.children;
     let aCol = aRow[appleR].children[appleC];
-    aCol.classList.add= "food";
+    aCol.classList.add("food");
 
     //add food location
     gameState.food[0]= appleR;
@@ -247,7 +264,7 @@ function eatApple()
         scoreLabel.innerText = gameState.score;
 
         let aRow = board.children;
-        let aCol = aRow[appleR].children[appleC];
+        let aCol = aRow[appleL[0]].children[appleL[1]];
         aCol.classList.remove("food");
 
         spawnApple();
