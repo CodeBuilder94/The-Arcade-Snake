@@ -33,7 +33,7 @@ function startGame(ev)
     gameState.start=true;
 
     //update the game every 30 frames
-    setInterval(tick, 250); //1000/30
+    setInterval(tick, 500); //1000/30
 }
 
 function makeBoard()
@@ -125,7 +125,7 @@ function tick()
 
 function render()
 {
-    console.log(document.getElementsByClassName("snake"));
+    //console.log(document.getElementsByClassName("snake"));
     removeSnake();
     moveSnake();
     drawSnake();
@@ -155,13 +155,15 @@ function drawSnake()
 {
     let sBody = snake.body;
 
-    let table = board.children
+    
 
     for(let o =0;o< sBody.length;o++)
     {
+        let table = board.children;
         let bodyPart = sBody[o];
         let snakeCell = table[bodyPart[0]].children[bodyPart[1]]; //sometimes gives an error
         snakeCell.classList.add("snake");
+        console.log(snakeCell);
     }
     
 }
@@ -184,10 +186,11 @@ function snakeCollision()
     for(let o =1; o<snake.body.length;o++)
     {   
         let snakePart = snake.body[o];
-
+        
         if(snakeHead[0]=== snakePart[0] && snakeHead[1] === snakePart[1])
         {
             //game over
+            gameState.start=false;
         }
     }
 }
@@ -337,12 +340,13 @@ function addBody()
 
     
 
-    let newSBody = snake.body[snake.body.length-1];
+    /*let newSBody = snake.body[snake.body.length-1];
     let bodyR = board.children;
     let bodyC = bodyR[newSBody[0]].children[newSBody[1]];
     
     //chage new body to green
     bodyC.classList.add("snake");
+    */
 
 }
 
