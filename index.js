@@ -1,3 +1,5 @@
+//get startbutton
+let startButton = document.querySelector("#start");
 //get game board
 let board = null;
 let row = null;
@@ -14,9 +16,18 @@ let gameState ={
     snake: snake,
     score:0,
     highScore:0,
-    start:false
+    start:false,
+    seconds:0,
+    minutes:0
 }
-//function for start of the page
+
+
+//update the game every 30 frames
+let gameRunner = setInterval(tick, 500); //1000/30
+
+//timer
+let ticker = setInterval(timer,1000);
+
 
 //function to start game
 function startGame(ev)
@@ -31,9 +42,10 @@ function startGame(ev)
     createSnake();
     
     gameState.start=true;
+    gameState.seconds=0;
+    gameState.minutes=0;
 
-    //update the game every 30 frames
-    setInterval(tick, 500); //1000/30
+    
 }
 
 function makeBoard()
@@ -121,6 +133,7 @@ function tick()
 
         //check to see if the game ends
         snakeCollision();
+
     }
     
 }
@@ -191,6 +204,25 @@ function snakeCollision()
         {
             //game over
             gameState.start=false;
+            board.remove();
+            snake.body=[];
+            snake.nextDirection =[-1,0];
+            gameState.foodPresent=false;
+            gameState.food=[];
+
+            //check to see if the high score needs updating
+            if(gameState.score > gameState.highScore)
+            {
+                gameState.highScore =gameState.score
+                let highS = document.querySelector("#highScoreV");
+                highS.innerText = gameState.highScore;
+                gameState.score=0;
+                
+            }
+
+            gameState.score=0;
+            
+            restart();
         }
     }
 }
@@ -350,9 +382,49 @@ function addBody()
 
 }
 
+function restart()
+{
+    let startButton = document.createElement("button");
+    startButton.innerText = "Restart!";
+    startButton.setAttribute("id", "start");
+    let gameDiv =document.querySelector("#gamePlace");;
+    gameDiv.appendChild(startButton);
+
+    clearInterval(gameRunner);
+    clearInterval(ticker);
+    
+    startButton.addEventListener("click",function(ev)
+    {
+        let gameRunner = setInterval(tick, 500);
+        let ticker = setInterval(timer,1000);
+        startGame(ev);
+    });
+    
+
+}
+
+function timer()
+{
+    if(gameState.start===true)
+    {
+        let minute = document.querySelector("#minutes");
+        let sec = document.querySelector("#seconds");
+
+        gameState.seconds+=1;
+
+        if(gameState.seconds===60)
+        {
+            gameState.seconds=0;
+            gameState.minutes+=1;
+        }
+
+        minute.innerText=gameState.minutes;
+        sec.innerText=gameState.seconds;
+    }
+    
+}
 
 //start button pressed
-let startButton = document.querySelector("#start");
 startButton.addEventListener("click",startGame);
 
 //arrow keys
@@ -382,3 +454,5 @@ document.onkeydown = function(ev)
             break;
     }
 }
+
+
