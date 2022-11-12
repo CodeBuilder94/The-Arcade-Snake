@@ -118,6 +118,9 @@ function tick()
 
         //check to see if the apple was eaten
         eatApple();
+
+        //check to see if the game ends
+        snakeCollision();
     }
     
 }
@@ -130,8 +133,6 @@ function render()
     moveSnake();
     drawSnake();
 
-    //check to see if the game ends
-    snakeCollision();
 }
 
 
@@ -163,7 +164,6 @@ function drawSnake()
         let bodyPart = sBody[o];
         let snakeCell = table[bodyPart[0]].children[bodyPart[1]]; //sometimes gives an error
         snakeCell.classList.add("snake");
-        console.log(snakeCell);
     }
     
 }
