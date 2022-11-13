@@ -168,13 +168,14 @@ function moveSnake()
 function drawSnake()
 {
     let sBody = snake.body;
-
-    
-
+    console.log(sBody);
     for(let o =0;o< sBody.length;o++)
     {
         let table = board.children;
         let bodyPart = sBody[o];
+
+        console.log(bodyPart[0] + "," + bodyPart[1]);
+
         let snakeCell = table[bodyPart[0]].children[bodyPart[1]]; //sometimes gives an error
         snakeCell.classList.add("snake");
     }
@@ -369,16 +370,6 @@ function addBody()
             snakeWarp(snake.body[snake.body.length-1])
         }
     }
-
-    
-
-    /*let newSBody = snake.body[snake.body.length-1];
-    let bodyR = board.children;
-    let bodyC = bodyR[newSBody[0]].children[newSBody[1]];
-    
-    //chage new body to green
-    bodyC.classList.add("snake");
-    */
 
 }
 
