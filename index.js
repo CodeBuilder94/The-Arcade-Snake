@@ -169,10 +169,6 @@ function moveSnake()
         moveByC =1;
     }
 
-
-    console.log("direction: "+snake.nextDirection);
-    
-
     let nextHead =[head[0]+ moveByR, head[1]+moveByC];
     
         
@@ -228,7 +224,7 @@ function snakeCollision()
             gameState.start=false;
             board.remove();
             snake.body=[];
-            snake.nextDirection =[-1,0];
+            snake.nextDirection ="up";
             gameState.foodPresent=false;
             gameState.food=[];
 
@@ -308,26 +304,30 @@ function spawnApple()
 
 function eatApple()
 {
-    //get score element
-    let scoreLabel = document.querySelector("#score");
-
-    //check to see if the head and the apple overlap;
-    let head = snake.body[0];
-    let appleL = gameState.food;
-
-    if(head[0]===appleL[0] && head[1]===appleL[1])
+    if(gameState.start ===true)
     {
-        gameState.score +=1;
-        scoreLabel.innerText = gameState.score;
+        //get score element
+        let scoreLabel = document.querySelector("#score");
 
-        let aRow = board.children;
-        let aCol = aRow[appleL[0]].children[appleL[1]];
-        aCol.classList.remove("food");
-
-        addBody();
-        spawnApple();
+        //check to see if the head and the apple overlap;
+        let head = snake.body[0];
+        let appleL = gameState.food;
         
+        if(head[0]===appleL[0] && head[1]===appleL[1])
+        {
+            gameState.score +=1;
+            scoreLabel.innerText = gameState.score;
+
+            let aRow = board.children;
+            let aCol = aRow[appleL[0]].children[appleL[1]];
+            aCol.classList.remove("food");
+
+            addBody();
+            spawnApple();
+            
+        }
     }
+    
 }
 
 function addBody()
@@ -407,6 +407,7 @@ function restart()
     
     startButton.addEventListener("click",function(ev)
     {
+        gameState.foodPresent=false;
         let gameRunner = setInterval(tick, 500);
         let ticker = setInterval(timer,1000);
         startGame(ev);
