@@ -131,7 +131,7 @@ function tick()
         //check to see if the apple was eaten
         eatApple();
 
-
+        console.log("number of parts: "+document.getElementsByClassName("snake").length);
     }
     
 }
@@ -324,7 +324,7 @@ function eatApple()
 
             addBody();
             spawnApple();
-            
+            console.log("ate food");
         }
     }
     
