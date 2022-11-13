@@ -23,7 +23,7 @@ let gameState ={
 
 
 //update the game every 30 frames
-let gameRunner = setInterval(tick, 500); //1000/30
+let gameRunner = setInterval(tick, 250); //1000/30
 
 //timer
 let ticker = setInterval(timer,1000);
@@ -131,7 +131,15 @@ function tick()
         //check to see if the apple was eaten
         eatApple();
 
-        console.log("number of parts: "+document.getElementsByClassName("snake").length);
+        if(document.getElementsByClassName("snake").length > snake.body.length)
+        {
+            console.log("number of parts: "+document.getElementsByClassName("snake").length);
+            console.log("body array length: "+snake.body.length);
+            let snakeClassList = document.getElementsByClassName("snake");
+            let extraPart =snakeClassList[snakeClassList.length-1];
+            extraPart.classList.remove("snake");
+        }
+        
     }
     
 }
@@ -324,8 +332,10 @@ function eatApple()
 
             addBody();
             spawnApple();
-            console.log("ate food");
         }
+
+        //make snake move faster
+        snake.speed+=1;
     }
     
 }
@@ -408,7 +418,7 @@ function restart()
     startButton.addEventListener("click",function(ev)
     {
         gameState.foodPresent=false;
-        let gameRunner = setInterval(tick, 500);
+        let gameRunner = setInterval(tick, 250);
         let ticker = setInterval(timer,1000);
         startGame(ev);
     });
