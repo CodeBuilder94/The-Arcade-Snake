@@ -131,7 +131,6 @@ function tick()
         //check to see if the apple was eaten
         eatApple();
 
-        //check to see if the game ends
 
     }
     
