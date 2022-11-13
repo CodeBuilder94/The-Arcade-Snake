@@ -6,7 +6,7 @@ let row = null;
 
 let snake = {
     body:[], //array of arrays
-    nextDirection:[-1,0],
+    nextDirection:"up",
     speed: 1
 }
 
@@ -132,7 +132,6 @@ function tick()
         eatApple();
 
         //check to see if the game ends
-        snakeCollision();
 
     }
     
@@ -145,37 +144,60 @@ function render()
     removeSnake();
     moveSnake();
     drawSnake();
-
 }
 
 
 function moveSnake()
 {
-    let moveByR = snake.nextDirection[0];
-    let moveByC =snake.nextDirection[1];
+    let moveByR = 0;
+    let moveByC = 0;
     let head = snake.body[0]
 
-    let nextHead =[head[0]+ moveByR, head[1]+moveByC];
+    if(snake.nextDirection ==="up")
+    {
+        moveByR =-1;
+    }
+    else if(snake.nextDirection ==="down")
+    {
+        moveByR =1;
+    }
+    else if(snake.nextDirection ==="left")
+    {
+        moveByC =-1;
+    }
+    else if(snake.nextDirection ==="right")
+    {
+        moveByC =1;
+    }
 
+
+    console.log("direction: "+snake.nextDirection);
+    
+
+    let nextHead =[head[0]+ moveByR, head[1]+moveByC];
+    
+        
     //check to see if the snake needs to warp
     snakeWarp(nextHead);
-    //console.log(snake.body);
+    
     snake.body.unshift(nextHead);
     snake.body.pop(snake.body[snake.length-1]);
+
+    //check to see if the game ends
+    snakeCollision();
 }
 
 
 function drawSnake()
 {
     let sBody = snake.body;
-    console.log(sBody);
-    for(let o =0;o< sBody.length;o++)
+    let table = board.children;
+    
+    for(let i=0; i< sBody.length; i++)
     {
-        let table = board.children;
-        let bodyPart = sBody[o];
-
-        console.log(bodyPart[0] + "," + bodyPart[1]);
-
+        
+        let bodyPart = sBody[i];
+        
         let snakeCell = table[bodyPart[0]].children[bodyPart[1]]; //sometimes gives an error
         snakeCell.classList.add("snake");
     }
@@ -185,7 +207,7 @@ function drawSnake()
 function removeSnake()
 {
     let snakeBody = document.getElementsByClassName("snake");
-    
+
     for(let i=0; i< snakeBody.length;i++)
     {
         let snakePart = snakeBody[i];
@@ -231,20 +253,20 @@ function snakeCollision()
 
 function snakeWarp(part)
 {
-    if(part[1]===30)
+    if(part[1]>=30)
     {
         part[1]=0;
     }
-    else if(part[1]===-1)
+    else if(part[1]<=-1)
     {
         part[1]=29;
     }
 
-    if(part[0]===30)
+    if(part[0]>=30)
     {
         part[0]=0;
     }
-    else if(part[0]===-1)
+    else if(part[0]<=-1)
     {
         part[0]=29;
     }
@@ -303,8 +325,9 @@ function eatApple()
         let aCol = aRow[appleL[0]].children[appleL[1]];
         aCol.classList.remove("food");
 
-        spawnApple();
         addBody();
+        spawnApple();
+        
     }
 }
 
@@ -319,7 +342,7 @@ function addBody()
     let oldPartC = sBody[1];
 
 
-    if(snake.nextDirection[0]===-1)
+    if(snake.nextDirection==="up")
     {
         //place below
         newPartR = oldPartR+1;
@@ -332,7 +355,7 @@ function addBody()
         }
         
     }
-    else if(snake.nextDirection[0]===1)
+    else if(snake.nextDirection === "down")
     {
         //place above
         newPartR = oldPartR-1;
@@ -345,7 +368,7 @@ function addBody()
         }
 
     }
-    else if(snake.nextDirection[1]===1)
+    else if(snake.nextDirection === "right")
     {
         //place left
         newPartC = oldPartC+1;
@@ -358,7 +381,7 @@ function addBody()
         }
 
     }
-    else if(snake.nextDirection=sBody[1]===-1)
+    else if(snake.nextDirection ==="left")
     {
         //place right
         newPartC =oldPartC-1;
@@ -370,7 +393,6 @@ function addBody()
             snakeWarp(snake.body[snake.body.length-1])
         }
     }
-
 }
 
 function restart()
@@ -425,23 +447,19 @@ document.onkeydown = function(ev)
     {
         case 37:
             //left arrow
-            snake.nextDirection[0]=0;
-            snake.nextDirection[1]=-1;
+            snake.nextDirection ="left";
             break;
         case 38:
             //up arrow
-            snake.nextDirection[0]=-1;
-            snake.nextDirection[1]=0;
+            snake.nextDirection = "up";
             break;
         case 39:
             //right arrow
-            snake.nextDirection[0]=0;
-            snake.nextDirection[1]=1;
+            snake.nextDirection = "right";
             break;
         case 40:
             //down arrow
-            snake.nextDirection[0]=1;
-            snake.nextDirection[1]=0;
+            snake.nextDirection = "down";
             break;
     }
 }
