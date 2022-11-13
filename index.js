@@ -446,18 +446,22 @@ document.onkeydown = function(ev)
     switch (ev.keyCode)
     {
         case 37:
+        case 65:
             //left arrow
             snake.nextDirection ="left";
             break;
         case 38:
+        case 87:
             //up arrow
             snake.nextDirection = "up";
             break;
         case 39:
+        case 68:
             //right arrow
             snake.nextDirection = "right";
             break;
         case 40:
+        case 83:
             //down arrow
             snake.nextDirection = "down";
             break;
