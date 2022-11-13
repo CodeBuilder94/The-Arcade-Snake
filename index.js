@@ -17,13 +17,14 @@ let gameState ={
     score:0,
     highScore:0,
     start:false,
-    seconds:0,
+    secondsOne:0,
+    secondsTen:0,
     minutes:0
 }
 
 
 //update the game every 30 frames
-let gameRunner = setInterval(tick, 250); //1000/30
+let gameRunner = setInterval(tick, 250);
 
 //timer
 let ticker = setInterval(timer,1000);
@@ -42,7 +43,8 @@ function startGame(ev)
     createSnake();
     
     gameState.start=true;
-    gameState.seconds=0;
+    gameState.secondsOne=0;
+    gameState.secondsTen=0;
     gameState.minutes=0;
 
     
@@ -133,21 +135,16 @@ function tick()
 
         if(document.getElementsByClassName("snake").length > snake.body.length)
         {
-            console.log("number of parts: "+document.getElementsByClassName("snake").length);
-            console.log("body array length: "+snake.body.length);
             let snakeClassList = document.getElementsByClassName("snake");
             let extraPart =snakeClassList[snakeClassList.length-1];
             extraPart.classList.remove("snake");
         }
-        
     }
-    
 }
  
 
 function render()
 {
-    //console.log(document.getElementsByClassName("snake"));
     removeSnake();
     moveSnake();
     drawSnake();
@@ -162,19 +159,19 @@ function moveSnake()
 
     if(snake.nextDirection ==="up")
     {
-        moveByR =-1;
+        moveByR =-1 *snake.speed;
     }
     else if(snake.nextDirection ==="down")
     {
-        moveByR =1;
+        moveByR =1 *snake.speed;
     }
     else if(snake.nextDirection ==="left")
     {
-        moveByC =-1;
+        moveByC =-1 *snake.speed;
     }
     else if(snake.nextDirection ==="right")
     {
-        moveByC =1;
+        moveByC =1 *snake.speed;
     }
 
     let nextHead =[head[0]+ moveByR, head[1]+moveByC];
@@ -201,7 +198,7 @@ function drawSnake()
         
         let bodyPart = sBody[i];
         
-        let snakeCell = table[bodyPart[0]].children[bodyPart[1]]; //sometimes gives an error
+        let snakeCell = table[bodyPart[0]].children[bodyPart[1]];
         snakeCell.classList.add("snake");
     }
     
@@ -334,8 +331,6 @@ function eatApple()
             spawnApple();
         }
 
-        //make snake move faster
-        snake.speed+=1;
     }
     
 }
@@ -431,18 +426,26 @@ function timer()
     if(gameState.start===true)
     {
         let minute = document.querySelector("#minutes");
-        let sec = document.querySelector("#seconds");
+        let sec = document.querySelector("#secondsOne");
+        let secTwo = document.querySelector("#secondsTen");
+        
+        gameState.secondsOne+=1;
 
-        gameState.seconds+=1;
-
-        if(gameState.seconds===60)
+        if(gameState.secondsOne===10)
         {
-            gameState.seconds=0;
+            gameState.secondsOne=0;
+            gameState.secondsTen+=1;
+        }
+
+        if(gameState.secondsTen===6)
+        {
+            gameState.secondsTen=0;
             gameState.minutes+=1;
         }
 
         minute.innerText=gameState.minutes;
-        sec.innerText=gameState.seconds;
+        sec.innerText=gameState.secondsOne;
+        secTwo.innerText = gameState.secondsTen;
     }
     
 }
